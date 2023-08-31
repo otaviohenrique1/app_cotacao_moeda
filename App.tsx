@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { StatusBar } from 'expo-status-bar';
 import { useEffect, useState } from 'react';
-import { Alert, StyleSheet, Text, View, TextInput, Button, TouchableOpacity } from 'react-native';
+import { Alert, StyleSheet, Text, View, TextInput, TouchableOpacity } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 import Constants from 'expo-constants';
 
@@ -66,6 +66,10 @@ export default function App() {
     setResultado(0);
     setValorMoeda("");
   }
+  
+  function formataMonetario(valor: number) {
+    return valor.toFixed(2).replace(".", ",");
+  }
 
   return (
     <View style={styles.container}>
@@ -89,34 +93,29 @@ export default function App() {
         <Text style={styles.subtitulo}>Informações</Text>
         <Text>Moedas: {data.moedas}</Text>
         <Text>Moedas codigos: {data.moeda1Codigo} - {data.moeda2Codigo}</Text>
-        <Text>Alta: {data.alta}</Text>
-        <Text>Baixa: {data.baixa}</Text>
+        <Text>Alta: {formataMonetario(data.alta)}</Text>
+        <Text>Baixa: {formataMonetario(data.baixa)}</Text>
         <Text>Data: {data.dataCriacao}</Text>
-        <Text>Timestamp: {data.timestamp}</Text>
+        {/* <Text>Timestamp: {data.timestamp}</Text> */}
       </View>
       <View style={styles.resultadoContainer}>
         <Text style={styles.subtitulo}>Resultado</Text>
-        <Text style={styles.resultado}>{resultado}</Text>
+        <Text style={styles.resultado}>
+          {`${data.moeda1Codigo} => ${(valorMoeda === "") ? formataMonetario(0) : formataMonetario(parseFloat(valorMoeda))}`}
+        </Text>
+        <Text style={styles.resultado}>
+          {`${data.moeda2Codigo} => ${formataMonetario(resultado)}`}
+        </Text>
       </View>
       <View style={styles.formulario}>
         <TextInput
           style={styles.input}
           onChangeText={setValorMoeda}
           value={valorMoeda}
-          placeholder="Valor na outra moeda"
+          placeholder="Valor da moeda"
           keyboardType="numeric"
         />
         <View style={styles.botoesContainer}>
-          {/* <Button
-            title="Calcular"
-            color="blue"
-            onPress={() => calculaCotacaoMoeda()}
-          />
-          <Button
-            title="Limpar"
-            color="red"
-            onPress={() => calculaCotacaoMoeda()}
-          /> */}
           <TouchableOpacity
             style={[styles.botao, styles.botaoCalcular]}
             onPress={() => calculaCotacaoMoeda()}
