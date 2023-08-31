@@ -3,6 +3,7 @@ import { StatusBar } from 'expo-status-bar';
 import { useEffect, useState } from 'react';
 import { Alert, StyleSheet, Text, View } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
+import Constants from 'expo-constants';
 
 interface DataTypes {
   moedas: string;
@@ -56,18 +57,12 @@ export default function App() {
     <View style={styles.container}>
       <Picker
         selectedValue={selectedLanguage}
-        onValueChange={(itemValue, itemIndex) =>
-          setSelectedLanguage(itemValue)
-        }
+        onValueChange={(itemValue, itemIndex) => setSelectedLanguage(itemValue)}
         style={styles.select}
       >
         {listaMoedas.map((item, index) => {
           return (
-            <Picker.Item
-              label={item.label}
-              value={item.value}
-              key={index}
-            />
+            <Picker.Item label={item.label} value={item.value} key={index} />
           );
         })}
         {/* <Picker.Item label="Java" value="java" />
@@ -88,8 +83,11 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+    marginTop: Constants.statusBarHeight,
+    marginBottom: 16,
+    marginHorizontal: 12,
+    // alignItems: 'center',
+    // justifyContent: 'center',
   },
   select: {
     // width: "100%",
