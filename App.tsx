@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { StatusBar } from 'expo-status-bar';
 import { useEffect, useState } from 'react';
-import { Alert, StyleSheet, Text, View } from 'react-native';
+import { Alert, StyleSheet, Text, View, TextInput, Button } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 import Constants from 'expo-constants';
 
@@ -28,6 +28,7 @@ const dadosIniciais: DataTypes = {
 export default function App() {
   const [data, setData] = useState<DataTypes>(dadosIniciais);
   const [selectedLanguage, setSelectedLanguage] = useState<string>(listaMoedas[0].value);
+  const [number, onChangeNumber] = useState<string>('');
 
   useEffect(() => {
     // axios.get("https://economia.awesomeapi.com.br/last/USD-BRL")
@@ -55,45 +56,104 @@ export default function App() {
 
   return (
     <View style={styles.container}>
-      <Picker
-        selectedValue={selectedLanguage}
-        onValueChange={(itemValue, itemIndex) => setSelectedLanguage(itemValue)}
-        style={styles.select}
-      >
-        {listaMoedas.map((item, index) => {
-          return (
-            <Picker.Item label={item.label} value={item.value} key={index} />
-          );
-        })}
-        {/* <Picker.Item label="Java" value="java" />
-        <Picker.Item label="JavaScript" value="js" /> */}
-      </Picker>
-      <Text>Moedas: {data.moedas}</Text>
-      <Text>Moedas codigos: {data.moeda1Codigo} - {data.moeda2Codigo}</Text>
-      <Text>Alta: {data.alta}</Text>
-      <Text>Baixa: {data.baixa}</Text>
-      <Text>Data: {data.dataCriacao}</Text>
-      <Text>Timestamp: {data.timestamp}</Text>
-      <StatusBar style="auto" />
+      <View style={styles.header}>
+        <Text style={styles.titulo}>App cotação de moeda</Text>
+      </View>
+      <View style={styles.selectContainer}>
+        <Picker
+          selectedValue={selectedLanguage}
+          onValueChange={(itemValue, itemIndex) => setSelectedLanguage(itemValue)}
+          style={styles.select}
+        >
+          {listaMoedas.map((item, index) => {
+            return (
+              <Picker.Item label={item.label} value={item.value} key={index} />
+            );
+          })}
+        </Picker>
+      </View>
+      <View style={styles.moedaContainer}>
+        <Text style={styles.subtitulo}>Informações</Text>
+        <Text>Moedas: {data.moedas}</Text>
+        <Text>Moedas codigos: {data.moeda1Codigo} - {data.moeda2Codigo}</Text>
+        <Text>Alta: {data.alta}</Text>
+        <Text>Baixa: {data.baixa}</Text>
+        <Text>Data: {data.dataCriacao}</Text>
+        <Text>Timestamp: {data.timestamp}</Text>
+      </View>
+      <View style={styles.resultadoContainer}>
+        <Text>{data.moeda1Codigo} - {data.moeda2Codigo}</Text>
+      </View>
+      <View style={styles.formulario}>
+        <TextInput
+          style={styles.input}
+          onChangeText={onChangeNumber}
+          value={number}
+          placeholder="Valor em Reais"
+          keyboardType="numeric"
+        />
+        <Button
+          title="Calcular"
+          onPress={() => {}}
+        />
+      </View>
+      <StatusBar style="dark" backgroundColor="cadetblue" />
     </View>
   );
 }
 
 const styles = StyleSheet.create({
+  header: {
+    backgroundColor: "cadetblue",
+    paddingHorizontal: 16,
+    paddingVertical: 12,
+  },
+  titulo: {
+    fontSize: 20,
+  },
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: 'white',
     marginTop: Constants.statusBarHeight,
+    // marginBottom: 16,
+    // marginHorizontal: 12,
+  },
+  moedaContainer: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderWidth: 1,
+    padding: 16,
+    margin: 16,
+  },
+  subtitulo: {
+    fontSize: 18,
     marginBottom: 16,
-    marginHorizontal: 12,
-    // alignItems: 'center',
-    // justifyContent: 'center',
+    borderBottomWidth: 1,
+    width: "100%",
+    textAlign: "center",
+  },
+  selectContainer: {
+    borderWidth: 1,
+    margin: 16,
   },
   select: {
-    // width: "100%",
-    width: 300,
+    width: "100%",
+    // width: 300,
     height: 50,
-  }
+  },
+  resultadoContainer: {
+    borderWidth: 1,
+    marginHorizontal: 16,
+  },
+  formulario: {
+    paddingHorizontal: 16,
+  },
+  input: {
+    // height: 40,
+    marginVertical: 12,
+    borderWidth: 1,
+    padding: 10,
+  },
 });
 
 interface ListaMoedasTypes {
