@@ -6,6 +6,7 @@ import { Picker } from '@react-native-picker/picker';
 import Constants from 'expo-constants';
 import { dadosIniciais, formataMonetario, listaMoedas } from './src/utils/utils';
 import { DataTypes } from './src/types/types';
+import { Botao } from './src/components/botao';
 
 export default function App() {
   const [data, setData] = useState<DataTypes>(dadosIniciais);
@@ -100,12 +101,18 @@ export default function App() {
           >
             <Text style={styles.botaoTitulo}>Calcular</Text>
           </TouchableOpacity>
-          <TouchableOpacity
+          {/* <TouchableOpacity
             style={[styles.botao, styles.botaoLimpar]}
             onPress={() => limpar()}
           >
             <Text style={styles.botaoTitulo}>Limpar</Text>
-          </TouchableOpacity>
+          </TouchableOpacity> */}
+          <Botao
+            buttonColor="red"
+            fontColor="white"
+            widthBotao="48%"
+            onPress={() => limpar()}
+          >Limpar</Botao>
         </View>
       </View>
       <StatusBar style="dark" backgroundColor="cadetblue" />
