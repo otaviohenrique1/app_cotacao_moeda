@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { StatusBar } from 'expo-status-bar';
 import { useEffect, useState } from 'react';
-import { Alert, StyleSheet, Text, View, TextInput, Button } from 'react-native';
+import { Alert, StyleSheet, Text, View, TextInput, Button, TouchableOpacity } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 import Constants from 'expo-constants';
 
@@ -27,14 +27,15 @@ const dadosIniciais: DataTypes = {
 
 export default function App() {
   const [data, setData] = useState<DataTypes>(dadosIniciais);
-  const [selectedLanguage, setSelectedLanguage] = useState<string>(listaMoedas[0].value);
-  const [number, onChangeNumber] = useState<string>('');
+  const [moedaSelecionada, setMoedaSelecionada] = useState<string>(listaMoedas[0].value);
+  const [valorMoeda, setValorMoeda] = useState<string>('');
+  const [resultado, setResultado] = useState<number>(0);
 
   useEffect(() => {
     // axios.get("https://economia.awesomeapi.com.br/last/USD-BRL")
-    axios.get(`https://economia.awesomeapi.com.br/last/${selectedLanguage}`)
+    axios.get(`https://economia.awesomeapi.com.br/last/${moedaSelecionada}`)
       .then((item) => {
-        const itemLista = selectedLanguage.replace("-", "");
+        const itemLista = moedaSelecionada.replace("-", "");
         // console.log(item.data[itemTeste]);
         const dados = item.data[itemLista];
         setData({
@@ -49,10 +50,22 @@ export default function App() {
       })
       .catch((erro) => {
         console.error(erro);
-        Alert.alert(`Erro: ${erro}`);
+        Alert.alert(`Erro`, `${erro}`);
       });
-  }, [selectedLanguage])
+  }, [moedaSelecionada])
 
+  function calculaCotacaoMoeda() {
+    if (valorMoeda === "") {
+      Alert.alert("Erro", "Campo vazio", [{ text: "Fechar" }]);
+    } else {
+      setResultado(data.alta * parseFloat(valorMoeda))
+    }
+  }
+
+  function limpar() {
+    setResultado(0);
+    setValorMoeda("");
+  }
 
   return (
     <View style={styles.container}>
@@ -61,8 +74,8 @@ export default function App() {
       </View>
       <View style={styles.selectContainer}>
         <Picker
-          selectedValue={selectedLanguage}
-          onValueChange={(itemValue, itemIndex) => setSelectedLanguage(itemValue)}
+          selectedValue={moedaSelecionada}
+          onValueChange={(itemValue, itemIndex) => setMoedaSelecionada(itemValue)}
           style={styles.select}
         >
           {listaMoedas.map((item, index) => {
@@ -82,20 +95,41 @@ export default function App() {
         <Text>Timestamp: {data.timestamp}</Text>
       </View>
       <View style={styles.resultadoContainer}>
-        <Text>{data.moeda1Codigo} - {data.moeda2Codigo}</Text>
+        <Text style={styles.subtitulo}>Resultado</Text>
+        <Text style={styles.resultado}>{resultado}</Text>
       </View>
       <View style={styles.formulario}>
         <TextInput
           style={styles.input}
-          onChangeText={onChangeNumber}
-          value={number}
-          placeholder="Valor em Reais"
+          onChangeText={setValorMoeda}
+          value={valorMoeda}
+          placeholder="Valor na outra moeda"
           keyboardType="numeric"
         />
-        <Button
-          title="Calcular"
-          onPress={() => {}}
-        />
+        <View style={styles.botoesContainer}>
+          {/* <Button
+            title="Calcular"
+            color="blue"
+            onPress={() => calculaCotacaoMoeda()}
+          />
+          <Button
+            title="Limpar"
+            color="red"
+            onPress={() => calculaCotacaoMoeda()}
+          /> */}
+          <TouchableOpacity
+            style={[styles.botao, styles.botaoCalcular]}
+            onPress={() => calculaCotacaoMoeda()}
+          >
+            <Text style={styles.botaoTitulo}>Calcular</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={[styles.botao, styles.botaoLimpar]}
+            onPress={() => limpar()}
+          >
+            <Text style={styles.botaoTitulo}>Limpar</Text>
+          </TouchableOpacity>
+        </View>
       </View>
       <StatusBar style="dark" backgroundColor="cadetblue" />
     </View>
@@ -144,6 +178,11 @@ const styles = StyleSheet.create({
   resultadoContainer: {
     borderWidth: 1,
     marginHorizontal: 16,
+    padding: 16,
+  },
+  resultado: {
+    textAlign: "center",
+    fontSize: 16,
   },
   formulario: {
     paddingHorizontal: 16,
@@ -153,6 +192,26 @@ const styles = StyleSheet.create({
     marginVertical: 12,
     borderWidth: 1,
     padding: 10,
+  },
+  botoesContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    // paddingHorizontal: 16,
+  },
+  botao: {
+    padding: 10,
+    width: "48%",
+    alignItems: "center",
+  },
+  botaoTitulo: {
+    fontSize: 18,
+    color: "white",
+  },
+  botaoCalcular: {
+    backgroundColor: "blue",
+  },
+  botaoLimpar: {
+    backgroundColor: "red",
   },
 });
 
