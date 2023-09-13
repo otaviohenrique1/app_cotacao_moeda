@@ -6,6 +6,7 @@ export const styles = StyleSheet.create({
     backgroundColor: "cadetblue",
     paddingHorizontal: 16,
     paddingVertical: 12,
+    marginTop: Constants.statusBarHeight,
   },
   titulo: {
     fontSize: 20,
@@ -13,16 +14,14 @@ export const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: 'white',
-    marginTop: Constants.statusBarHeight,
-    // marginBottom: 16,
-    // marginHorizontal: 12,
+    margin: 16,
   },
   moedaContainer: {
     alignItems: 'center',
-    justifyContent: 'center',
+    padding: 10,
+    marginBottom: 16,
+    borderColor: "black",
     borderWidth: 1,
-    padding: 16,
-    margin: 16,
   },
   subtitulo: {
     fontSize: 18,
@@ -33,7 +32,7 @@ export const styles = StyleSheet.create({
   },
   selectContainer: {
     borderWidth: 1,
-    margin: 16,
+    marginBottom: 16,
   },
   select: {
     width: "100%",
@@ -54,13 +53,12 @@ export const styles = StyleSheet.create({
   },
   input: {
     // height: 40,
-    marginVertical: 12,
+    // marginVertical: 12,
     borderWidth: 1,
     padding: 10,
   },
   botoesContainer: {
     flexDirection: "row",
     justifyContent: "space-between",
-    paddingHorizontal: 16,
   },
 });
