@@ -57,6 +57,7 @@ export const dadosIniciais: DataTypes = {
 };
 
 export const listaMoedas2 = [
+  { label: "Selecione", value: "" },
   { label: "Dirham dos Emirados", value: "AED" },
   { label: "Afghani do Afeganistão", value: "AFN" },
   { label: "Lek Albanês", value: "ALL" },

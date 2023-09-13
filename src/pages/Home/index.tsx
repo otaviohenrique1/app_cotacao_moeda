@@ -21,6 +21,8 @@ export default function Home() {
         const itemLista = moedaSelecionada.replace("-", "");
         // console.log(item.data[itemTeste]);
         const dados = item.data[itemLista];
+        // console.log(dados);
+
         setData({
           moedas: dados.name,
           moeda1Codigo: dados.code,
