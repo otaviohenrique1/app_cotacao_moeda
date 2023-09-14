@@ -12,34 +12,10 @@ const validationSchema = yup.object().shape({
   name: yup.string().required('O nome é obrigatório'),
   email: yup.string().email('Insira um e-mail válido').required('O e-mail é obrigatório'),
   valor: yup.string().required('O campo é obrigatório'),
-  moedaCodigo1: yup.string().required('O campo é obrigatório'),
-  moedaCodigo2: yup.string().required('O campo é obrigatório'),
+  moedaCodigo: yup.string().required('O campo é obrigatório'),
 });
 
-
-
-export function param1() {
-  return (
-    <View style={{ marginBottom: 16 }}>
-      <View style={styles.selectContainer}>
-        <Picker
-          selectedValue={values.moedaCodigo1}
-          onValueChange={(itemValue, itemIndex) => setFieldValue("moedaCodigo1", itemValue)}
-          style={styles.select}
-        >
-          {listaMoedas2.map((item, index) => {
-            return (
-              <Picker.Item label={item.label} value={item.value} key={index} />
-            );
-          })}
-        </Picker>
-      </View>
-      {errors.moedaCodigo1 && <Text style={{ color: "red" }}>{errors.moedaCodigo1}</Text>}
-    </View>
-  );
-}
-
-export default function Home2() {
+export default function Home4() {
   const [moeda1Selecionada, setMoeda1Selecionada] = useState<string>("");
   const [moeda2Selecionada, setMoeda2Selecionada] = useState<string>("");
   const [moedaCodigo, setMoedaCodigo] = useState<string>("");
@@ -56,11 +32,11 @@ export default function Home2() {
       <View style={styles.container}>
         <View style={{ marginBottom: 16 }}>
           <Formik
-            initialValues={{ valor: "", moedaCodigo1: "", moedaCodigo2: "" }}
+            initialValues={{ valor: '', moedaCodigo: "" }}
             validationSchema={validationSchema}
-            onSubmit={values => Alert.alert(values.valor, values.moedaCodigo1)}
+            onSubmit={values => Alert.alert(values.valor, values.moedaCodigo)}
           >
-            {({ handleChange, handleBlur, handleSubmit, setFieldValue, resetForm, values, errors }) => (
+            {({ handleChange, handleBlur, handleSubmit, setFieldValue, values, errors }) => (
               <View>
                 <View style={{ marginBottom: 16 }}>
                   <TextInput
@@ -75,8 +51,8 @@ export default function Home2() {
                 <View style={{ marginBottom: 16 }}>
                   <View style={styles.selectContainer}>
                     <Picker
-                      selectedValue={values.moedaCodigo1}
-                      onValueChange={(itemValue, itemIndex) => setFieldValue("moedaCodigo1", itemValue)}
+                      selectedValue={values.moedaCodigo}
+                      onValueChange={(itemValue, itemIndex) => setFieldValue("moedaCodigo", itemValue)}
                       style={styles.select}
                     >
                       {listaMoedas2.map((item, index) => {
@@ -86,38 +62,9 @@ export default function Home2() {
                       })}
                     </Picker>
                   </View>
-                  {errors.moedaCodigo1 && <Text style={{ color: "red" }}>{errors.moedaCodigo1}</Text>}
+                  {errors.moedaCodigo && <Text style={{ color: "red" }}>{errors.moedaCodigo}</Text>}
                 </View>
-                <View style={{ marginBottom: 16 }}>
-                  <View style={styles.selectContainer}>
-                    <Picker
-                      selectedValue={values.moedaCodigo2}
-                      onValueChange={(itemValue, itemIndex) => setFieldValue("moedaCodigo2", itemValue)}
-                      style={styles.select}
-                    >
-                      {listaMoedas2.map((item, index) => {
-                        return (
-                          <Picker.Item label={item.label} value={item.value} key={index} />
-                        );
-                      })}
-                    </Picker>
-                  </View>
-                  {errors.moedaCodigo2 && <Text style={{ color: "red" }}>{errors.moedaCodigo2}</Text>}
-                </View>
-                <View style={styles.botoesContainer}>
-                  <Botao
-                    buttonColor="blue"
-                    fontColor="white"
-                    widthBotao="48%"
-                    onPress={() => handleSubmit()}
-                  >Calcular</Botao>
-                  <Botao
-                    buttonColor="red"
-                    fontColor="white"
-                    widthBotao="48%"
-                    onPress={() => resetForm()}
-                  >Limpar</Botao>
-                </View>
+                <Button onPress={() => handleSubmit()} title="Submit" />
               </View>
             )}
           </Formik>
