@@ -1,6 +1,6 @@
 import { StatusBar } from 'expo-status-bar';
 import { useState } from 'react';
-import { Text, TextInput, View, Button, Alert } from 'react-native';
+import { Text, TextInput, View, Alert } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 import { listaMoedas2 } from '../../utils/utils';
 import { styles } from './styles';
@@ -15,29 +15,6 @@ const validationSchema = yup.object().shape({
   moedaCodigo1: yup.string().required('O campo é obrigatório'),
   moedaCodigo2: yup.string().required('O campo é obrigatório'),
 });
-
-
-
-export function param1() {
-  return (
-    <View style={{ marginBottom: 16 }}>
-      <View style={styles.selectContainer}>
-        <Picker
-          selectedValue={values.moedaCodigo1}
-          onValueChange={(itemValue, itemIndex) => setFieldValue("moedaCodigo1", itemValue)}
-          style={styles.select}
-        >
-          {listaMoedas2.map((item, index) => {
-            return (
-              <Picker.Item label={item.label} value={item.value} key={index} />
-            );
-          })}
-        </Picker>
-      </View>
-      {errors.moedaCodigo1 && <Text style={{ color: "red" }}>{errors.moedaCodigo1}</Text>}
-    </View>
-  );
-}
 
 export default function Home2() {
   const [moeda1Selecionada, setMoeda1Selecionada] = useState<string>("");
@@ -58,7 +35,10 @@ export default function Home2() {
           <Formik
             initialValues={{ valor: "", moedaCodigo1: "", moedaCodigo2: "" }}
             validationSchema={validationSchema}
-            onSubmit={values => Alert.alert(values.valor, values.moedaCodigo1)}
+            onSubmit={values => {
+              Alert.alert(`${values.moedaCodigo1}-${values.moedaCodigo2}`);
+              console.log(values.valor);
+            }}
           >
             {({ handleChange, handleBlur, handleSubmit, setFieldValue, resetForm, values, errors }) => (
               <View>
@@ -69,6 +49,7 @@ export default function Home2() {
                     value={values.valor}
                     style={[styles.input]}
                     placeholder="Valor"
+                    keyboardType="numeric"
                   />
                   {errors.valor && <Text style={{ color: "red" }}>{errors.valor}</Text>}
                 </View>
@@ -122,94 +103,9 @@ export default function Home2() {
             )}
           </Formik>
         </View>
-        <View style={{ marginBottom: 16 }}>
-          <View style={styles.selectContainer}>
-            <Picker
-              selectedValue={moeda1Selecionada}
-              onValueChange={(itemValue, itemIndex) => setMoeda1Selecionada(itemValue)}
-              style={styles.select}
-            >
-              {listaMoedas2.map((item, index) => {
-                return (
-                  <Picker.Item label={item.label} value={item.value} key={index} />
-                );
-              })}
-            </Picker>
-          </View>
-          {(erroCampoMoeda1 !== "") ? <Text>{erroCampoMoeda1}</Text> : null}
-        </View>
-        <View style={{ marginBottom: 16 }}>
-          <View style={styles.selectContainer}>
-            <Picker
-              selectedValue={moeda2Selecionada}
-              onValueChange={(itemValue, itemIndex) => setMoeda2Selecionada(itemValue)}
-              style={styles.select}
-            >
-              {listaMoedas2.map((item, index) => {
-                return (
-                  <Picker.Item label={item.label} value={item.value} key={index} />
-                );
-              })}
-            </Picker>
-          </View>
-          {(erroCampoMoeda2 !== "") ? <Text>{erroCampoMoeda2}</Text> : null}
-        </View>
         <View style={styles.moedaContainer}>
+          <Text>Resultado</Text>
           <Text>{moedaCodigo}</Text>
-        </View>
-        {(erroCampoMoeda1 !== "") ? (
-          <View style={{
-            alignItems: 'center',
-            marginHorizontal: 16,
-            marginBottom: 16,
-          }}>
-            <Text>{erroCampoMoeda1}</Text>
-          </View>
-        ) : null}
-        <View style={{ marginBottom: 16 }}>
-          <TextInput
-            style={styles.input}
-            onChangeText={setValorMoeda}
-            value={valorMoeda}
-            placeholder="Valor da moeda"
-            keyboardType="numeric"
-          />
-          {(erroCampoValor !== "") ? <Text>{erroCampoValor}</Text> : null}
-        </View>
-        <View style={styles.botoesContainer}>
-          <Botao
-            buttonColor="blue"
-            fontColor="white"
-            widthBotao="48%"
-            onPress={() => {
-              if (moeda1Selecionada === "") {
-                setErroCampoMoeda1("Campo vazio");
-              } else if (moeda2Selecionada === "") {
-                setErroCampoMoeda2("Campo vazio");
-              } else if (valorMoeda === "") {
-                setErroCampoValor("Campo vazio");
-              } else {
-                setMoedaCodigo(`${moeda1Selecionada}-${moeda2Selecionada}`);
-                setErroCampoValor("");
-                setErroCampoMoeda1("");
-                setErroCampoMoeda2("");
-              }
-            }}
-          >Calcular</Botao>
-          <Botao
-            buttonColor="red"
-            fontColor="white"
-            widthBotao="48%"
-            onPress={() => {
-              setMoeda1Selecionada("");
-              setMoeda2Selecionada("");
-              setMoedaCodigo("");
-              setValorMoeda("");
-              setErroCampoValor("");
-              setErroCampoMoeda1("");
-              setErroCampoMoeda2("");
-            }}
-          >Limpar</Botao>
         </View>
         <StatusBar style="dark" backgroundColor="cadetblue" />
       </View>

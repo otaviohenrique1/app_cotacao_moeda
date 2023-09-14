@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, TextInput, Button } from 'react-native';
+import { View, Text, TextInput, Button, Alert } from 'react-native';
 import { Formik } from 'formik';
 import * as yup from 'yup';
 
@@ -16,6 +16,7 @@ export default function Home3() {
         validationSchema={validationSchema}
         onSubmit={(values) => {
           // Enviar dados do formulário (values) para o servidor ou realizar outras ações
+          Alert.alert(values.name);
           console.log(values);
         }}
       >
