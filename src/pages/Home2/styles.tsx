@@ -32,7 +32,7 @@ export const styles = StyleSheet.create({
   },
   selectContainer: {
     borderWidth: 1,
-    marginBottom: 16,
+    // marginBottom: 16,
   },
   select: {
     width: "100%",
