@@ -1,6 +1,6 @@
 import { StatusBar } from 'expo-status-bar';
 import { useState } from 'react';
-import { Text, TextInput, View, Alert } from 'react-native';
+import { Text, TextInput, View, Button } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 import { listaMoedas2 } from '../../utils/utils';
 import { styles } from './styles';
@@ -35,10 +35,7 @@ export default function Home2() {
           <Formik
             initialValues={{ valor: "", moedaCodigo1: "", moedaCodigo2: "" }}
             validationSchema={validationSchema}
-            onSubmit={values => {
-              Alert.alert(`${values.moedaCodigo1}-${values.moedaCodigo2}`);
-              console.log(values.valor);
-            }}
+            onSubmit={values => console.log(values.valor)}
           >
             {({ handleChange, handleBlur, handleSubmit, setFieldValue, resetForm, values, errors }) => (
               <View>

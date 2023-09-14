@@ -31,45 +31,6 @@ export default function Home4() {
       </View>
       <View style={styles.container}>
         <View style={{ marginBottom: 16 }}>
-          <Formik
-            initialValues={{ valor: '', moedaCodigo: "" }}
-            validationSchema={validationSchema}
-            onSubmit={values => Alert.alert(values.valor, values.moedaCodigo)}
-          >
-            {({ handleChange, handleBlur, handleSubmit, setFieldValue, values, errors }) => (
-              <View>
-                <View style={{ marginBottom: 16 }}>
-                  <TextInput
-                    onChangeText={handleChange('valor')}
-                    onBlur={handleBlur('valor')}
-                    value={values.valor}
-                    style={[styles.input]}
-                    placeholder="Valor"
-                  />
-                  {errors.valor && <Text style={{ color: "red" }}>{errors.valor}</Text>}
-                </View>
-                <View style={{ marginBottom: 16 }}>
-                  <View style={styles.selectContainer}>
-                    <Picker
-                      selectedValue={values.moedaCodigo}
-                      onValueChange={(itemValue, itemIndex) => setFieldValue("moedaCodigo", itemValue)}
-                      style={styles.select}
-                    >
-                      {listaMoedas2.map((item, index) => {
-                        return (
-                          <Picker.Item label={item.label} value={item.value} key={index} />
-                        );
-                      })}
-                    </Picker>
-                  </View>
-                  {errors.moedaCodigo && <Text style={{ color: "red" }}>{errors.moedaCodigo}</Text>}
-                </View>
-                <Button onPress={() => handleSubmit()} title="Submit" />
-              </View>
-            )}
-          </Formik>
-        </View>
-        <View style={{ marginBottom: 16 }}>
           <View style={styles.selectContainer}>
             <Picker
               selectedValue={moeda1Selecionada}
