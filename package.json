@@ -16,7 +16,6 @@
     "expo-status-bar": "~1.6.0",
     "formik": "^2.4.4",
     "react": "18.2.0",
-    "react-hook-form": "^7.46.1",
     "react-native": "0.72.4",
     "yup": "^1.2.0"
   },

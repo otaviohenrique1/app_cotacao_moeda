@@ -11,6 +11,7 @@ import * as yup from "yup";
 const validationSchema = yup.object().shape({
   name: yup.string().required('O nome é obrigatório'),
   email: yup.string().email('Insira um e-mail válido').required('O e-mail é obrigatório'),
+  moedaCodigo: yup.string().required('O campo é obrigatório'),
 });
 
 export default function Home2() {
@@ -30,19 +31,37 @@ export default function Home2() {
       <View style={styles.container}>
         <View style={{ marginBottom: 16 }}>
           <Formik
-            initialValues={{ email: '' }}
+            initialValues={{ email: '', moedaCodigo: "" }}
             validationSchema={validationSchema}
             onSubmit={values => Alert.alert(values.email)}
           >
-            {({ handleChange, handleBlur, handleSubmit, values, errors }) => (
+            {({ handleChange, handleBlur, handleSubmit, setFieldValue, values, errors }) => (
               <View>
-                <TextInput
-                  onChangeText={handleChange('email')}
-                  onBlur={handleBlur('email')}
-                  value={values.email}
-                  style={[styles.input, { marginBottom: 8 }]}
-                />
-                {errors.email && <Text>{errors.email}</Text>}
+                <View style={{ marginBottom: 16 }}>
+                  <TextInput
+                    onChangeText={handleChange('email')}
+                    onBlur={handleBlur('email')}
+                    value={values.email}
+                    style={[styles.input]}
+                  />
+                  {errors.email && <Text style={{ color: "red" }}>{errors.email}</Text>}
+                </View>
+                <View style={{ marginBottom: 16 }}>
+                  <View style={styles.selectContainer}>
+                    <Picker
+                      selectedValue={values.moedaCodigo}
+                      onValueChange={(itemValue, itemIndex) => setFieldValue("moedaCodigo", itemValue)}
+                      style={styles.select}
+                    >
+                      {listaMoedas2.map((item, index) => {
+                        return (
+                          <Picker.Item label={item.label} value={item.value} key={index} />
+                        );
+                      })}
+                    </Picker>
+                  </View>
+                  {errors.moedaCodigo && <Text style={{ color: "red" }}>{errors.moedaCodigo}</Text>}
+                </View>
                 <Button onPress={() => handleSubmit()} title="Submit" />
               </View>
             )}
