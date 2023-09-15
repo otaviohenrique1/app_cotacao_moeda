@@ -7,6 +7,7 @@ import { styles } from './styles';
 import { Botao } from '../../components/botao';
 import { Formik } from 'formik';
 import * as yup from "yup";
+import AntDesign from 'react-native-vector-icons/AntDesign';
 
 const validationSchema = yup.object().shape({
   valor: yup.string().required('O campo é obrigatório'),
@@ -33,7 +34,10 @@ export default function Home2() {
           <Formik
             initialValues={{ valor: "", moedaCodigo1: "", moedaCodigo2: "" }}
             validationSchema={validationSchema}
-            onSubmit={values => console.log(values.valor)}
+            onSubmit={values => {
+              console.log(values.valor);
+              setMoedaCodigo(values.valor);
+            }}
           >
             {({ handleChange, handleBlur, handleSubmit, setFieldValue, resetForm, values, errors }) => (
               <View>
@@ -79,6 +83,13 @@ export default function Home2() {
                     </Picker>
                   </View>
                   {errors.moedaCodigo2 && <Text style={{ color: "red" }}>{errors.moedaCodigo2}</Text>}
+                </View>
+                <View style={[styles.moedaContainer, { flexDirection: "row", justifyContent: "space-around" }]}>
+                  <Text>{(values.moedaCodigo1 === "") ? "Moeda 1" : values.moedaCodigo1}</Text>
+                  {/* <AntDesign name="forward" size={20} />
+                  <Text>Para</Text> */}
+                  <AntDesign name="forward" size={20}/>
+                  <Text>{(values.moedaCodigo2 === "") ? "Moeda 2" : values.moedaCodigo2}</Text>
                 </View>
                 <View style={styles.botoesContainer}>
                   <Botao
