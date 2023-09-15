@@ -1,13 +1,14 @@
 import { StatusBar } from 'expo-status-bar';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Text, TextInput, View, Button } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
-import { listaMoedas2 } from '../../utils/utils';
+import { listaMoedas3 } from '../../utils/utils';
 import { styles } from './styles';
 import { Botao } from '../../components/botao';
 import { Formik } from 'formik';
 import * as yup from "yup";
 import AntDesign from 'react-native-vector-icons/AntDesign';
+import axios from 'axios';
 
 const validationSchema = yup.object().shape({
   valor: yup.string().required('O campo é obrigatório'),
@@ -15,14 +16,59 @@ const validationSchema = yup.object().shape({
   moedaCodigo2: yup.string().required('O campo é obrigatório'),
 });
 
+interface FormTypes {
+  valor: string;
+  moedaCodigo1: string;
+  moedaCodigo2: string;
+}
+
+const valoresIniciais: FormTypes = {
+  valor: '',
+  moedaCodigo1: '',
+  moedaCodigo2: ''
+};
+
 export default function Home2() {
   const [moeda1Selecionada, setMoeda1Selecionada] = useState<string>("");
   const [moeda2Selecionada, setMoeda2Selecionada] = useState<string>("");
   const [moedaCodigo, setMoedaCodigo] = useState<string>("");
+  const [valorMoeda, setValorMoeda] = useState<string>('');
   const [erroCampoMoeda1, setErroCampoMoeda1] = useState<string>("");
   const [erroCampoMoeda2, setErroCampoMoeda2] = useState<string>("");
   const [erroCampoValor, setErroCampoValor] = useState<string>("");
-  const [valorMoeda, setValorMoeda] = useState<string>('');
+
+  useEffect(() => {
+    // axios.get(`https://economia.awesomeapi.com.br/last/${moedaSelecionada}`)
+    //   .then((item) => {
+    //     const itemLista = moedaSelecionada.replace("-", "");
+    //     // console.log(item.data[itemTeste]);
+    //     const dados = item.data[itemLista];
+    //     // console.log(dados);
+
+    //     setData({
+    //       moedas: dados.name,
+    //       moeda1Codigo: dados.code,
+    //       moeda2Codigo: dados.codein,
+    //       alta: parseFloat(dados.high),
+    //       baixa: parseFloat(dados.low),
+    //       timestamp: dados.timestamp,
+    //       dataCriacao: dados.create_date,
+    //     });
+    //   })
+    //   .catch((erro) => {
+    //     console.error(erro);
+    //     Alert.alert(`Erro`, `${erro}`);
+    //   });
+  },);
+
+  function onSubmitForm(values: FormTypes) {
+    // console.log(values.valor);
+    // https://economia.awesomeapi.com.br/last/USD-BRL
+    // setMoedaCodigo(`https://economia.awesomeapi.com.br/last/${values.moedaCodigo1}-${values.moedaCodigo2}`);
+    // setMoedaCodigo(values.valor);
+    setValorMoeda(values.valor);
+    setMoedaCodigo(`${values.moedaCodigo1}-${values.moedaCodigo2}`);
+  }
 
   return (
     <>
@@ -32,34 +78,33 @@ export default function Home2() {
       <View style={styles.container}>
         <View style={{ marginBottom: 16 }}>
           <Formik
-            initialValues={{ valor: "", moedaCodigo1: "", moedaCodigo2: "" }}
+            initialValues={valoresIniciais}
             validationSchema={validationSchema}
-            onSubmit={values => {
-              console.log(values.valor);
-              setMoedaCodigo(values.valor);
-            }}
+            onSubmit={onSubmitForm}
           >
             {({ handleChange, handleBlur, handleSubmit, setFieldValue, resetForm, values, errors }) => (
               <View>
                 <View style={{ marginBottom: 16 }}>
+                  <Text>Valor monetário</Text>
                   <TextInput
                     onChangeText={handleChange('valor')}
                     onBlur={handleBlur('valor')}
                     value={values.valor}
                     style={[styles.input]}
-                    placeholder="Valor"
+                    placeholder="Valor da moeda"
                     keyboardType="numeric"
                   />
                   {errors.valor && <Text style={{ color: "red" }}>{errors.valor}</Text>}
                 </View>
                 <View style={{ marginBottom: 16 }}>
+                  <Text>Moeda 1</Text>
                   <View style={styles.selectContainer}>
                     <Picker
                       selectedValue={values.moedaCodigo1}
                       onValueChange={(itemValue, itemIndex) => setFieldValue("moedaCodigo1", itemValue)}
                       style={styles.select}
                     >
-                      {listaMoedas2.map((item, index) => {
+                      {listaMoedas3.map((item, index) => {
                         return (
                           <Picker.Item label={item.label} value={item.value} key={index} />
                         );
@@ -69,13 +114,14 @@ export default function Home2() {
                   {errors.moedaCodigo1 && <Text style={{ color: "red" }}>{errors.moedaCodigo1}</Text>}
                 </View>
                 <View style={{ marginBottom: 16 }}>
+                  <Text>Moeda 2</Text>
                   <View style={styles.selectContainer}>
                     <Picker
                       selectedValue={values.moedaCodigo2}
                       onValueChange={(itemValue, itemIndex) => setFieldValue("moedaCodigo2", itemValue)}
                       style={styles.select}
                     >
-                      {listaMoedas2.map((item, index) => {
+                      {listaMoedas3.map((item, index) => {
                         return (
                           <Picker.Item label={item.label} value={item.value} key={index} />
                         );
@@ -88,7 +134,7 @@ export default function Home2() {
                   <Text>{(values.moedaCodigo1 === "") ? "Moeda 1" : values.moedaCodigo1}</Text>
                   {/* <AntDesign name="forward" size={20} />
                   <Text>Para</Text> */}
-                  <AntDesign name="forward" size={20}/>
+                  <AntDesign name="forward" size={20} />
                   <Text>{(values.moedaCodigo2 === "") ? "Moeda 2" : values.moedaCodigo2}</Text>
                 </View>
                 <View style={styles.botoesContainer}>
@@ -111,7 +157,8 @@ export default function Home2() {
         </View>
         <View style={styles.moedaContainer}>
           <Text>Resultado</Text>
-          <Text>{moedaCodigo}</Text>
+          <Text>{(moedaCodigo === "") ? "Moeda1-Moeda2" : moedaCodigo}</Text>
+          <Text>{(valorMoeda === "") ? "0,0" : valorMoeda}</Text>
         </View>
         <StatusBar style="dark" backgroundColor="cadetblue" />
       </View>
