@@ -1,14 +1,15 @@
 import { StatusBar } from 'expo-status-bar';
 import { useEffect, useState } from 'react';
-import { Text, TextInput, View, Button } from 'react-native';
+import { Text, TextInput, View, Button, Alert } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
-import { listaMoedas3 } from '../../utils/utils';
+import { dadosIniciaisMoeda, listaMoedas3 } from '../../utils/utils';
 import { styles } from './styles';
 import { Botao } from '../../components/botao';
 import { Formik } from 'formik';
 import * as yup from "yup";
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import axios from 'axios';
+import { MoedaDataTypes } from '../../types/types';
 
 const validationSchema = yup.object().shape({
   valor: yup.string().required('O campo é obrigatório'),
@@ -36,6 +37,7 @@ export default function Home2() {
   const [erroCampoMoeda1, setErroCampoMoeda1] = useState<string>("");
   const [erroCampoMoeda2, setErroCampoMoeda2] = useState<string>("");
   const [erroCampoValor, setErroCampoValor] = useState<string>("");
+  const [dados, setDados] = useState<MoedaDataTypes>(dadosIniciaisMoeda);
 
   useEffect(() => {
     // axios.get(`https://economia.awesomeapi.com.br/last/${moedaSelecionada}`)
@@ -59,15 +61,59 @@ export default function Home2() {
     //     console.error(erro);
     //     Alert.alert(`Erro`, `${erro}`);
     //   });
-  },);
+    // axios.get(`https://economia.awesomeapi.com.br/last/${moedaCodigo}`)
+    //   .then((item) => {
+    //     let data = item.data[`${moeda1Selecionada}${moeda2Selecionada}`];
+    //     setDados({
+    //       ask: parseFloat(data.ask),
+    //       bid: parseFloat(data.bid),
+    //       code: data.code,
+    //       codein: data.codein,
+    //       create_date: data.create_date,
+    //       high: parseFloat(data.high),
+    //       low: parseFloat(data.low),
+    //       name: data.name,
+    //       pctChange: parseFloat(data.pctChange),
+    //       timestamp: data.timestamp,
+    //       varBid: parseFloat(data.varBid)
+    //     });
+    //   })
+    //   .catch((erro) => {
+    //     console.error(erro);
+    //     Alert.alert(`Erro`, `${erro}`);
+    //   });
+  },[]);
 
   function onSubmitForm(values: FormTypes) {
     // console.log(values.valor);
     // https://economia.awesomeapi.com.br/last/USD-BRL
     // setMoedaCodigo(`https://economia.awesomeapi.com.br/last/${values.moedaCodigo1}-${values.moedaCodigo2}`);
     // setMoedaCodigo(values.valor);
+    setMoeda1Selecionada(values.moedaCodigo1);
+    setMoeda2Selecionada(values.moedaCodigo2);
     setValorMoeda(values.valor);
     setMoedaCodigo(`${values.moedaCodigo1}-${values.moedaCodigo2}`);
+    axios.get(`https://economia.awesomeapi.com.br/last/${moedaCodigo}`)
+      .then((item) => {
+        let data = item.data[`${moeda1Selecionada}${moeda2Selecionada}`];
+        setDados({
+          ask: parseFloat(data.ask),
+          bid: parseFloat(data.bid),
+          code: data.code,
+          codein: data.codein,
+          create_date: data.create_date,
+          high: parseFloat(data.high),
+          low: parseFloat(data.low),
+          name: data.name,
+          pctChange: parseFloat(data.pctChange),
+          timestamp: data.timestamp,
+          varBid: parseFloat(data.varBid)
+        });
+      })
+      .catch((erro) => {
+        console.error(erro);
+        Alert.alert(`Erro`, `${erro}`);
+      });
   }
 
   return (
@@ -159,6 +205,7 @@ export default function Home2() {
           <Text>Resultado</Text>
           <Text>{(moedaCodigo === "") ? "Moeda1-Moeda2" : moedaCodigo}</Text>
           <Text>{(valorMoeda === "") ? "0,0" : valorMoeda}</Text>
+          <Text>{dados.bid}</Text>
         </View>
         <StatusBar style="dark" backgroundColor="cadetblue" />
       </View>

@@ -1,4 +1,4 @@
-import { DataTypes, ListaMoedasTypes } from "../types/types";
+import { DataTypes, ListaMoedasTypes, MoedaDataTypes } from "../types/types";
 
 export function formataMonetario(valor: number) {
   return valor.toFixed(2).replace(".", ",");
@@ -54,6 +54,20 @@ export const dadosIniciais: DataTypes = {
   baixa: 0,
   timestamp: '',
   dataCriacao: ''
+};
+
+export const dadosIniciaisMoeda: MoedaDataTypes = {
+  ask: 0,
+  bid: 0,
+  code: "",
+  codein: "",
+  create_date: "",
+  high: 0,
+  low: 0,
+  name: "",
+  pctChange: 0,
+  timestamp: "",
+  varBid: 0
 };
 
 export const listaMoedas2 = [
@@ -218,6 +232,7 @@ export const listaMoedas2 = [
 ];
 
 export const listaMoedas3 = [
+  { label: "Selecione", value: "" },
   { label: "Afghani do Afeganistão", value: "AFN" },
   { label: "Ariary Madagascarense", value: "MGA" },
   { label: "Baht Tailandês", value: "THB" },
