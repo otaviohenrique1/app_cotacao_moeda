@@ -4,6 +4,6 @@ import Home3 from './src/pages/Home3';
 
 export default function App() {
   return (
-    <Home2 />
+    <Home />
   );
 }
