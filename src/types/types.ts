@@ -11,6 +11,8 @@ export interface DataTypes {
   baixa: number;
   timestamp: string;
   dataCriacao: string;
+  venda: number; // ask
+  compra: number; // bid
 }
 
 export interface MoedaDataTypes {
