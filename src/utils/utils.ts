@@ -53,7 +53,9 @@ export const dadosIniciais: DataTypes = {
   alta: 0,
   baixa: 0,
   timestamp: '',
-  dataCriacao: ''
+  dataCriacao: '',
+  venda: 0,
+  compra: 0
 };
 
 export const dadosIniciaisMoeda: MoedaDataTypes = {
