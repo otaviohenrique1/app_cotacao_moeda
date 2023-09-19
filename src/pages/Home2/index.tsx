@@ -93,27 +93,27 @@ export default function Home2() {
     setMoeda2Selecionada(values.moedaCodigo2);
     setValorMoeda(values.valor);
     setMoedaCodigo(`${values.moedaCodigo1}-${values.moedaCodigo2}`);
-    axios.get(`https://economia.awesomeapi.com.br/last/${moedaCodigo}`)
-      .then((item) => {
-        let data = item.data[`${moeda1Selecionada}${moeda2Selecionada}`];
-        setDados({
-          ask: parseFloat(data.ask),
-          bid: parseFloat(data.bid),
-          code: data.code,
-          codein: data.codein,
-          create_date: data.create_date,
-          high: parseFloat(data.high),
-          low: parseFloat(data.low),
-          name: data.name,
-          pctChange: parseFloat(data.pctChange),
-          timestamp: data.timestamp,
-          varBid: parseFloat(data.varBid)
-        });
-      })
-      .catch((erro) => {
-        console.error(erro);
-        Alert.alert(`Erro`, `${erro}`);
-      });
+    // axios.get(`https://economia.awesomeapi.com.br/last/${moedaCodigo}`)
+    //   .then((item) => {
+    //     let data = item.data[`${moeda1Selecionada}${moeda2Selecionada}`];
+    //     setDados({
+    //       ask: parseFloat(data.ask),
+    //       bid: parseFloat(data.bid),
+    //       code: data.code,
+    //       codein: data.codein,
+    //       create_date: data.create_date,
+    //       high: parseFloat(data.high),
+    //       low: parseFloat(data.low),
+    //       name: data.name,
+    //       pctChange: parseFloat(data.pctChange),
+    //       timestamp: data.timestamp,
+    //       varBid: parseFloat(data.varBid)
+    //     });
+    //   })
+    //   .catch((erro) => {
+    //     // console.error(erro);
+    //     Alert.alert(`Erro`, `${erro}`);
+    //   });
   }
 
   return (
@@ -204,8 +204,8 @@ export default function Home2() {
         <View style={styles.moedaContainer}>
           <Text>Resultado</Text>
           <Text>{(moedaCodigo === "") ? "Moeda1-Moeda2" : moedaCodigo}</Text>
-          <Text>{(valorMoeda === "") ? "0,0" : valorMoeda}</Text>
-          <Text>{dados.bid}</Text>
+          <Text>{(valorMoeda === "") ? "0" : valorMoeda}</Text>
+          <Text>{(dados.ask === 0) ? "0" : dados.ask}</Text>
         </View>
         <StatusBar style="dark" backgroundColor="cadetblue" />
       </View>
