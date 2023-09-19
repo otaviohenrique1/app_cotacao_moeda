@@ -31,6 +31,8 @@ export default function Home() {
           baixa: parseFloat(dados.low),
           timestamp: dados.timestamp,
           dataCriacao: dados.create_date,
+          compra: parseFloat(dados.ask),
+          venda: parseFloat(dados.bid),
         });
       })
       .catch((erro) => {
@@ -77,6 +79,8 @@ export default function Home() {
         <Text>Alta: {formataMonetario(data.alta)}</Text>
         <Text>Baixa: {formataMonetario(data.baixa)}</Text>
         <Text>Data: {data.dataCriacao}</Text>
+        <Text>Compra: {formataMonetario(data.compra)}</Text>
+        <Text>Venda: {formataMonetario(data.venda)}</Text>
         {/* <Text>Timestamp: {data.timestamp}</Text> */}
       </View>
       <View style={styles.resultadoContainer}>
