@@ -3,14 +3,15 @@ import { useState } from "react";
 import { Button, ScrollView, TextInput } from "react-native";
 import { StyleSheet, Text, View } from "react-native";
 import { StatusBar } from 'expo-status-bar';
-import * as yup from "yup";
 import { Formik } from 'formik';
 import { Picker } from "@react-native-picker/picker";
+import * as yup from "yup";
 
 const validationSchema = yup.object().shape({
   tamanhoSenha: yup
     .number()
     .min(8, "Minimo de 8 caracteres")
+    .max(48, "Maximo de 48 caracteres")
     .required('O campo é obrigatório'),
   tipo: yup
     .string()
@@ -104,7 +105,7 @@ export default function GeradorSenha() {
                   <TextInput
                     onChangeText={handleChange('tamanhoSenha')}
                     onBlur={handleBlur('tamanhoSenha')}
-                    value={(values.tamanhoSenha).toString()}
+                    value={(values.tamanhoSenha === 0) ? "" : values.tamanhoSenha.toString()}
                     style={[styles.input]}
                     placeholder="Quantidade de caracteres"
                     keyboardType="numeric"
