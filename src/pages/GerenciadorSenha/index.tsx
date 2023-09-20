@@ -6,6 +6,7 @@ import { StatusBar } from 'expo-status-bar';
 import { Formik } from 'formik';
 import { Picker } from "@react-native-picker/picker";
 import * as yup from "yup";
+import { Feather } from '@expo/vector-icons';
 
 const validationSchema = yup.object().shape({
   tamanhoSenha: yup
@@ -68,8 +69,8 @@ export default function GeradorSenha() {
         break;
     }
     for (var i = 0; i < tamanhoSenha; i++) {
-      var randomNumber = Math.floor(Math.random() * charsLista.length);
-      senha += charsLista.substring(randomNumber, randomNumber + 1);
+      var numeroAleatorio = Math.floor(Math.random() * charsLista.length);
+      senha += charsLista.substring(numeroAleatorio, numeroAleatorio + 1);
     }
     return senha;
   }
@@ -87,6 +88,9 @@ export default function GeradorSenha() {
       <StatusBar style="dark" backgroundColor="cadetblue" />
       <ScrollView>
         <View style={styles.container}>
+          <View style={styles.logoContainer}>
+            <Feather name="lock" size={48} color="black" />
+          </View>
           <Formik
             initialValues={valoresIniciais}
             validationSchema={validationSchema}
@@ -174,13 +178,15 @@ const styles = StyleSheet.create({
   },
   selectContainer: {
     borderWidth: 1,
-    // marginBottom: 16,
   },
   select: {
     width: "100%",
-    // width: 300,
     height: 50,
   },
+  logoContainer: {
+    alignItems: "center",
+    padding: 20,
+  }
 });
 
 const listaTipo = [
